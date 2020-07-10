@@ -1,0 +1,30 @@
+{
+	"name": "qqq",
+	"version": "1.0.0",
+	"description": "Script interface",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"format": "npx prettier --write **/*.{js,json,yml,md}",
+		"build": "npx browserify -e index.js -o dist/qqq.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/oekshido/qqq.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/oekshido/qqq/issues"
+	},
+	"homepage": "https://github.com/oekshido/qqq#readme",
+	"devDependencies": {
+		"browserify": "^16.5.1",
+		"prettier": "^2.0.5"
+	},
+	"dependencies": {
+		"jailed": "^0.3.1",
+		"markdown-it": "^11.0.0"
+	}
+}
