@@ -84,7 +84,7 @@ function getArguments(vars) {
 
 /**
  * Sets the output to the respective variables inside the document.
- * 
+ *
  * @param {*} output - Values to be displayed. Non-arrays are turned to single item arrays.
  * @param {object} vars - Variables in {name:[type, data, html, id]} format.
  */
@@ -116,11 +116,16 @@ function setOutput(output, vars) {
  */
 class Script {
 	async render() {
+		await new Promise((resolve) => {
+			document.addEventListener("DOMContentLoaded", () => {
+				resolve()
+			})
+		})
 		let html = mdit.render(this.md)
 		for (let [, , htm] of Object.values(this.vars)) {
 			html = html.replace(/\{\{.*?\}\}/, htm) // html is the render, htm is the variable's html.
 		}
-		this.element.innerHTML = html
+		document.getElementById(this.id).innerHTML = html
 		for (let [type, , , id] of Object.values(this.vars)) {
 			if (type == "run")
 				document.getElementById(id).addEventListener("click", () => {
@@ -129,13 +134,12 @@ class Script {
 		}
 	}
 	/**
-	 * @param {string} id - Id of the div to be modified. 
+	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded
 	 * @param {object} bindings - jailed bindings for the code.
 	 */
 	constructor(id = "script", code = "", bindings = {}) {
 		this.id = id
-		this.element = document.getElementById(id)
 		;[this.md, this.code] = code.split("{{{{")
 		this.code += ";application.setInterface({run:run})"
 		this.vars = getVariables(this.md) // Elements between brackets.

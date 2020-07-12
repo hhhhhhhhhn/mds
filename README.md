@@ -1,23 +1,28 @@
 # MarkdownScript
+
 Markdown-powered scripts.
 
-Note: This package needs to be bundled with 
+Note: This package needs to be bundled with
 [jailed](https://github.com/asvd/jailed)
 
 ## Usage
+
 In HTML:
+
 ```html
 ...
 <div id="scriptid"></div>
 ...
 ```
 
-In JS (deferred):
+In JS (not deffered):
+
 ```javascript
 let script = new mds.Script("scriptid", code, bindings)
 ```
 
 ## MDS format
+
 Markdown with scripting capabilities. Variables are marked with double curly
 braces (`{{}}`). They all follow the same format, `{{type:name:data}}`, where
 the type and data follows the table below, the name is unique and the `:data`
@@ -32,17 +37,18 @@ type.
 
 ## Types
 
-| Type      | Description           | Function | Data                   |
-|-----------|-----------------------|----------|------------------------|
-| shorttext | Short text input.     | Input    | Text placeholder.      |
-| text      | Textarea.             | Input    | Text placeholder.      | 
-| checkbox  | Returns boolean.      | Input    | No Use.                |
-| options   | Selection of strings. | Input    | Comma separated values.|
-| outmd     | Displays markdown.    | Output   | No Use.                |
-| outraw    | Displays html.        | Output   | No Use.                |
-| run       | Button to run script. | Run      | Button Text            |
+| Type      | Description           | Function | Data                    |
+| --------- | --------------------- | -------- | ----------------------- |
+| shorttext | Short text input.     | Input    | Text placeholder.       |
+| text      | Textarea.             | Input    | Text placeholder.       |
+| checkbox  | Returns boolean.      | Input    | No Use.                 |
+| options   | Selection of strings. | Input    | Comma separated values. |
+| outmd     | Displays markdown.    | Output   | No Use.                 |
+| outraw    | Displays html.        | Output   | No Use.                 |
+| run       | Button to run script. | Run      | Button Text             |
 
 ## Example
+
 ```markdown
 # Fibonacci Generator
 
@@ -54,11 +60,11 @@ Enter amount of numbers: {{shorttext:n}}
 
 {{{{
 function run({n = "10"}, ret){
-	n = Number(n) - 2
-	let fib = [0, 1]
-	for(let i = 0; i < n; i++){
-		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
-	}
-	ret(fib)
+n = Number(n) - 2
+let fib = [0, 1]
+for(let i = 0; i < n; i++){
+fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
+}
+ret(fib)
 }
 ```

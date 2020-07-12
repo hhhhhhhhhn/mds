@@ -3,9 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>qqq test</title>
+	<title>MDS test</title>
 	<script src="../jailed/jailed.js"></script>
 	<script src="../dist/mds.js"></script>
+	<script>
+// JS Start
+let code = `
+# Fibonacci Generator
+
+Enter amount of numbers: {{shorttext:n}}
+
+{{run:button:Generate!}}
+
+{{outraw:output}}
+
+{{{{
+function run({n = "10"}, ret){
+	n = Number(n) - 2
+	let fib = [0, 1]
+	for(let i = 0; i < n; i++){
+		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
+	}
+	ret(fib)
+}
+`
+let script = new mds.Script("script", code)
+// JS End
+	</script>
 </head>
 <body>
 	<div id="script"></div>
