@@ -82,6 +82,12 @@ function getArguments(vars) {
 	return args
 }
 
+/**
+ * Sets the output to the respective variables inside the document.
+ * 
+ * @param {*} output - Values to be displayed. Non-arrays are turned to single item arrays.
+ * @param {object} vars - Variables in {name:[type, data, html, id]} format.
+ */
 function setOutput(output, vars) {
 	if (!Array.isArray(output)) output = [output] // All outputs are in array format.
 	for (let [type, , , id] of Object.values(vars)) {
@@ -122,6 +128,11 @@ class Script {
 				})
 		}
 	}
+	/**
+	 * @param {string} id - Id of the div to be modified. 
+	 * @param {string} code - Script to be loaded
+	 * @param {object} bindings - jailed bindings for the code.
+	 */
 	constructor(id = "script", code = "", bindings = {}) {
 		this.id = id
 		this.element = document.getElementById(id)
