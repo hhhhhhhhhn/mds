@@ -1,12 +1,12 @@
 {
-	"name": "qqq",
+	"name": "mds",
 	"version": "1.0.0",
 	"description": "Script interface",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "npx prettier --write **/*.{js,json,yml,md}",
-		"build": "npx browserify -e index.js -o dist/qqq.js"
+		"build": "npx browserify -e index.js -o dist/mds.js"
 	},
 	"repository": {
 		"type": "git",

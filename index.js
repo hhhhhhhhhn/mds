@@ -5,7 +5,7 @@ const mdit = require("markdown-it")()
  * Gets HTML form of a variable.
  *
  * @param {string} name - Name of the variable.
- * @param {"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"} type - Type of the variable.
+ * @param {"run"|"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"} type - Type of the variable.
  * @param {string} data - Data associated with the variable.
  * @returns {string} - HTML form of the variable.
  *
@@ -167,4 +167,4 @@ class Script {
 	}
 }
 
-window.qqq = {Script: Script}
+window.mds = {Script: Script}
