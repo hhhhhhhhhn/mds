@@ -139,9 +139,6 @@ class Script {
 		;[this.md, this.code] = code.split("{{{{")
 		this.code += ";application.setInterface({run:run})"
 		this.vars = getVariables(this.md) // Elements between brackets.
-		bindings["ret"] = (...val) => {
-			this.ret = val
-		}
 		this.plugin = new jailed.DynamicPlugin(this.code, bindings)
 		this.loading = true
 		this.render()
@@ -158,7 +155,7 @@ class Script {
 		if (this.loading) await this.start()
 		let args = getArguments(this.vars)
 		await new Promise((resolve) => {
-			this.plugin.remote.run(args, (val) => {
+			this.plugin.remote.run(args, (...val) => {
 				this.ret = val
 				resolve()
 			})

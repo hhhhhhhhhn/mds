@@ -13,5 +13,5 @@ function run({n = "10"}, ret){
 	for(let i = 0; i < n; i++){
 		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
 	}
-	ret([fib])
+	ret(fib)
 }
