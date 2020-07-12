@@ -15,7 +15,7 @@ In HTML:
 ...
 ```
 
-In JS (not deffered):
+In JS (not deferred):
 
 ```javascript
 let script = new mds.Script("scriptid", code, bindings)
