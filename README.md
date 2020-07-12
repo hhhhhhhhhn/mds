@@ -49,7 +49,7 @@ type.
 
 ## Example
 
-```markdown
+```javascript
 # Fibonacci Generator
 
 Enter amount of numbers: {{shorttext:n}}
@@ -60,11 +60,11 @@ Enter amount of numbers: {{shorttext:n}}
 
 {{{{
 function run({n = "10"}, ret){
-n = Number(n) - 2
-let fib = [0, 1]
-for(let i = 0; i < n; i++){
-fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
-}
-ret(fib)
+	n = Number(n) - 2
+	let fib = [0, 1]
+	for(let i = 0; i < n; i++){
+		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
+	}
+	ret(fib)
 }
 ```
