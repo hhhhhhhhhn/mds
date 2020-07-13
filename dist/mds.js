@@ -97,7 +97,7 @@ function setOutput(output, vars, outraw) {
 			// If the variable is an output
 			switch (type) {
 				case "outraw":
-					if(outraw)
+					if (outraw)
 						document.getElementById(id).innerHTML = String(
 							output.shift()
 						)
@@ -143,7 +143,12 @@ class Script {
 	 * @param {object} options - Option object
 	 * @param {boolean} options.outraw - Allow `outraw` (raw HTML) output.
 	 */
-	constructor(id = "script", code = "", bindings = {}, {outraw = false} = {}) {
+	constructor(
+		id = "script",
+		code = "",
+		bindings = {},
+		{outraw = false} = {}
+	) {
 		this.outraw = outraw
 		this.id = id
 		;[this.md, this.code] = code.split("{{{{")

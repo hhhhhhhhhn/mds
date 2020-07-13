@@ -44,7 +44,7 @@ type.
 | checkbox  | Returns boolean.      | Input    | No Use.                 |
 | options   | Selection of strings. | Input    | Comma separated values. |
 | outmd     | Displays markdown.    | Output   | No Use.                 |
-| outraw*   | Displays html.        | Output   | No Use.                 |
+| outraw\*  | Displays html.        | Output   | No Use.                 |
 | run       | Button to run script. | Run      | Button Text.            |
 
 Note: `outraw` is disabled by default, and can only be activated by setting the
