@@ -87,17 +87,19 @@ function getArguments(vars) {
  *
  * @param {*} output - Values to be displayed. Non-arrays are turned to single item arrays.
  * @param {object} vars - Variables in {name:[type, data, html, id]} format.
+ * @param {boolean} outraw - Allow `outraw` (plain HTML) output.
  */
-function setOutput(output, vars) {
+function setOutput(output, vars, outraw) {
 	if (!Array.isArray(output)) output = [output] // All outputs are in array format.
 	for (let [type, , , id] of Object.values(vars)) {
 		if (type.slice(0, 3) == "out") {
 			// If the variable is an output
 			switch (type) {
 				case "outraw":
-					document.getElementById(id).innerHTML = String(
-						output.shift()
-					)
+					if(outraw)
+						document.getElementById(id).innerHTML = String(
+							output.shift()
+						)
 					break
 				case "outmd":
 					document.getElementById(id).innerHTML = mdit.render(
@@ -136,9 +138,12 @@ class Script {
 	/**
 	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded
-	 * @param {object} bindings - jailed bindings for the code.
+	 * @param {object} bindings - Jailed bindings for the code.
+	 * @param {object} options - Option object
+	 * @param {boolean} options.outraw - Allow `outraw` (raw HTML) output.
 	 */
-	constructor(id = "script", code = "", bindings = {}) {
+	constructor(id = "script", code = "", bindings = {}, {outraw = false} = {}) {
+		this.outraw = outraw
 		this.id = id
 		;[this.md, this.code] = code.split("{{{{")
 		this.code += ";application.setInterface({run:run})"
@@ -164,7 +169,7 @@ class Script {
 				resolve()
 			})
 		})
-		setOutput(this.ret, this.vars)
+		setOutput(this.ret, this.vars, this.outraw)
 	}
 }
 

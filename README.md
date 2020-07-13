@@ -18,7 +18,7 @@ In HTML:
 In JS (not deferred):
 
 ```javascript
-let script = new mds.Script("scriptid", code, bindings)
+let script = new mds.Script("scriptid", code, bindings, options)
 ```
 
 ## MDS format
@@ -44,8 +44,11 @@ type.
 | checkbox  | Returns boolean.      | Input    | No Use.                 |
 | options   | Selection of strings. | Input    | Comma separated values. |
 | outmd     | Displays markdown.    | Output   | No Use.                 |
-| outraw    | Displays html.        | Output   | No Use.                 |
-| run       | Button to run script. | Run      | Button Text             |
+| outraw*   | Displays html.        | Output   | No Use.                 |
+| run       | Button to run script. | Run      | Button Text.            |
+
+Note: `outraw` is disabled by default, and can only be activated by setting the
+`outraw` option to `true`.
 
 ## Example
 
@@ -56,7 +59,7 @@ Enter amount of numbers: {{shorttext:n}}
 
 {{run:button:Generate!}}
 
-{{outraw:output1}}
+{{outmd:output1}}
 
 {{{{
 function run({n = "10"}, ret){
