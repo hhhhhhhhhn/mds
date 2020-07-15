@@ -119,11 +119,13 @@ function setOutput(output, vars, outraw) {
  */
 class Script {
 	async render() {
-		await new Promise((resolve) => {
-			document.addEventListener("DOMContentLoaded", () => {
-				resolve()
+		let ready = ["interactive", "compete"].includes(document.readyState)
+		if (!ready)
+			await new Promise((resolve) => {
+				document.addEventListener("DOMContentLoaded", () => {
+					resolve()
+				})
 			})
-		})
 		let html = mdit.render(this.md)
 		for (let [, , htm] of Object.values(this.vars)) {
 			html = html.replace(/\{\{.*?\}\}/, htm) // html is the render, htm is the variable's html.
