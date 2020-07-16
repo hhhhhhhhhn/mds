@@ -28,7 +28,9 @@ function var2html(name, type, data) {
 		case "outmd":
 			return `<div id="script${name}">${data}</div>`
 		case "checkbox":
-			return `<input type="checkbox" id="script${name}">`
+			let checked = ""
+			if (Number(data)) checked = " checked"
+			return `<input type="checkbox" id="script${name}"${checked}>`
 		case "options":
 			let html = `<select id="script${name}">`
 			if (data)

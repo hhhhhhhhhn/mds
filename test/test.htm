@@ -9,22 +9,20 @@
 	<script>
 // JS Start
 let code = `
-# Fibonacci Generator
+- text: {{text:text:placeholder}}
+- shorttext: {{shorttext:shorttext:placeholder}}
+- options: {{options:options:Option 1, Option 2}}
+- checkbox: {{checkbox:checkbox}}
+  - checkbox (1): {{checkbox:checkbox1:1}}
+  - checkbox (0): {{checkbox:checkbox0:0}}
 
-Enter amount of numbers: {{shorttext:n}}
+{{run:run:Check Values!}}
 
-{{run:button:Generate!}}
-
-{{outmd:output}}
+{{outmd:outmd}}
 
 {{{{
-function run({n = "10"}, ret){
-	n = Number(n) - 2
-	let fib = [0, 1]
-	for(let i = 0; i < n; i++){
-		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
-	}
-	ret(fib)
+function run(inputs, ret){
+	ret(Object.values(inputs).map(e => String(e)).join(", "))
 }
 `
 let script = new mds.Script("script", code)

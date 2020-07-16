@@ -41,7 +41,7 @@ type.
 | --------- | --------------------- | -------- | ----------------------- |
 | shorttext | Short text input.     | Input    | Text placeholder.       |
 | text      | Textarea.             | Input    | Text placeholder.       |
-| checkbox  | Returns boolean.      | Input    | No Use.                 |
+| checkbox  | Returns boolean.      | Input    | Default value (1 or 0). |
 | options   | Selection of strings. | Input    | Comma separated values. |
 | outmd     | Displays markdown.    | Output   | No Use.                 |
 | outraw\*  | Displays html.        | Output   | No Use.                 |
