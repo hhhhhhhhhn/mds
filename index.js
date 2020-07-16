@@ -150,6 +150,11 @@ class Script {
 		bindings = {},
 		{outraw = false} = {}
 	) {
+		if (!code.includes("{{{{")) {
+			// If there is no script, just javascript.
+			renderMD(id, code)
+			return
+		}
 		this.outraw = outraw
 		this.id = id
 		;[this.md, this.code] = code.split("{{{{")
@@ -180,4 +185,22 @@ class Script {
 	}
 }
 
-window.mds = {Script: Script}
+/**
+ * Renders markdown-it in a div.
+ *
+ * @param {string} id - Id of div.
+ * @param {string} md - Markdown code.
+ */
+async function renderMD(id, md) {
+	let ready = ["interactive", "compete"].includes(document.readyState)
+	if (!ready)
+		await new Promise((resolve) => {
+			document.addEventListener("DOMContentLoaded", () => {
+				resolve()
+			})
+		})
+	let html = mdit.render(md)
+	document.getElementById(id).innerHTML = html
+}
+
+window.mds = {Script: Script, renderMD: renderMD}
