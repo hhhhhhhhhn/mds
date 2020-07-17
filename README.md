@@ -31,9 +31,10 @@ with `{{{{`. It needs to be javascript. To get functions like the `Math` module,
 you need to include them in the `bindings` argument. The script must be a
 function, with two arguments, the arguments themselves in an object, and the
 return callback. The arguments' name are the mds `name` attribute (see example
-below). The output will be displayed in the order they are declared, so each
-argument of the callback function represents a variable with `outraw` or `outmd`
-type.
+below). The output must be a dictionary, with the keys being the `name` of the
+output variables in which the value will be displayed. For simple programs with
+only one output, the value for it can passed directly to the callback function,
+if the output's `name` is `output`.
 
 ## Types
 
@@ -59,7 +60,7 @@ Enter amount of numbers: {{shorttext:n}}
 
 {{run:button:Generate!}}
 
-{{outmd:output1}}
+{{outmd:outputname}}
 
 {{{{
 function run({n = "10"}, ret){
@@ -68,6 +69,28 @@ function run({n = "10"}, ret){
 	for(let i = 0; i < n; i++){
 		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
 	}
-	ret(fib)
+	ret({outputname:fib})
+}
+```
+
+With shorthand:
+
+```javascript
+# Fibonacci Generator
+
+Enter amount of numbers: {{shorttext:n}}
+
+{{run:button:Generate!}}
+
+{{outmd:output}} // Note: the name must be "output"
+
+{{{{
+function run({n = "10"}, ret){
+	n = Number(n) - 2
+	let fib = [0, 1]
+	for(let i = 0; i < n; i++){
+		fib.push(fib.slice(-2).reduce((a, b) => a + b, 0))
+	}
+	ret(fib) // This will be considered as {output:fib}
 }
 ```

@@ -18,11 +18,11 @@ let code = `
 
 {{run:run:Check Values!}}
 
-{{outmd:outmd}}
+{{outmd:out}}
 
 {{{{
 function run(inputs, ret){
-	ret(Object.values(inputs).map(e => String(e)).join(", "))
+	ret({out:Object.values(inputs).map(e => String(e)).join(", ")})
 }
 `
 let script = new mds.Script("script", code)

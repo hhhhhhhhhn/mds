@@ -92,25 +92,21 @@ function getArguments(vars) {
  * @param {boolean} outraw - Allow `outraw` (plain HTML) output.
  */
 function setOutput(output, vars, outraw) {
-	if (!Array.isArray(output)) output = [output] // All outputs are in array format.
-	for (let [type, , , id] of Object.values(vars)) {
-		if (type.slice(0, 3) == "out") {
-			// If the variable is an output
-			switch (type) {
-				case "outraw":
-					if (outraw)
-						document.getElementById(id).innerHTML = String(
-							output.shift()
-						)
-					break
-				case "outmd":
-					document.getElementById(id).innerHTML = mdit.render(
-						String(output.shift())
-					)
-					break
-				default:
-					break
-			}
+	if (Array.isArray(output) || typeof output != "object")
+		output = {output: output} //Turns into dictionary if not already.
+	for (let [name, value] of Object.entries(output)) {
+		let [type, , , id] = vars[name]
+		switch (type) {
+			case "outraw":
+				if (outraw)
+					document.getElementById(id).innerHTML = String(value)
+				break
+			case "outmd":
+				document.getElementById(id).innerHTML = mdit.render(
+					String(value)
+				)
+			default:
+				break
 		}
 	}
 }
@@ -178,7 +174,7 @@ class Script {
 		if (this.loading) await this.start()
 		let args = getArguments(this.vars)
 		await new Promise((resolve) => {
-			this.plugin.remote.run(args, (...val) => {
+			this.plugin.remote.run(args, (val) => {
 				this.ret = val
 				resolve()
 			})
