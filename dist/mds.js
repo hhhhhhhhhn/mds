@@ -52,7 +52,7 @@ function var2html(name, type, data) {
  * @private
  *
  * @param {string} md - Markdown text.
- * @returns {Object} - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
+ * @returns {object} - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
  *
  * @example
  * In: "Sample {{text:cool}} Text {{ input:val$ue }}"
@@ -174,9 +174,9 @@ class Script {
 
 	/**
 	 * @param {string} id - Id of the div to be modified.
-	 * @param {string} code - Script to be loaded
+	 * @param {string} code - Script to be loaded.
 	 * @param {object} bindings - Jailed bindings for the code.
-	 * @param {object} options - Option object
+	 * @param {object} options - Option object.
 	 * @param {boolean} options.outraw - Allow `outraw` (raw HTML) output.
 	 */
 	constructor(

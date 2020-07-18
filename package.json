@@ -1,14 +1,15 @@
 {
 	"name": "mds",
 	"version": "1.0.0",
-	"description": "Script interface",
+	"description": "Markdown powered scripts",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "npx prettier --write **/*.{js,json,yml,md}",
 		"build": "npx browserify -e index.js -o dist/mds.js",
+		"buildmin": "npx browserify -p tinyify -e index.js -o dist/mds.min.js",
 		"docs": "npx jsdoc-to-markdown -f index.js --private > api.md",
-		"all": "npm run format && npm run build && npm run docs"
+		"all": "npm run format && npm run build && npm run buildmin && npm run docs"
 	},
 	"repository": {
 		"type": "git",
@@ -24,7 +25,8 @@
 	"devDependencies": {
 		"browserify": "^16.5.1",
 		"jsdoc-to-markdown": "^6.0.1",
-		"prettier": "^2.0.5"
+		"prettier": "^2.0.5",
+		"tinyify": "^2.5.2"
 	},
 	"dependencies": {
 		"jailed": "^0.3.1",

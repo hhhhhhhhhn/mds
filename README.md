@@ -1,6 +1,6 @@
 # MarkdownScript
 
-Markdown powered scripts. [API documentation](api.md)
+Markdown powered scripts. [API documentation](api.md).
 
 Note: This package needs to be bundled with
 [jailed](https://github.com/asvd/jailed)

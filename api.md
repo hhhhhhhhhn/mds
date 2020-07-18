@@ -9,7 +9,7 @@
         * [.start()](#module_mds..Script+start) ℗
         * [.run()](#module_mds..Script+run)
     * [~var2html(name, type, data)](#module_mds..var2html) ⇒ <code>string</code> ℗
-    * [~getVariables(md)](#module_mds..getVariables) ⇒ <code>Object</code> ℗
+    * [~getVariables(md)](#module_mds..getVariables) ⇒ <code>object</code> ℗
     * [~getArguments(vars)](#module_mds..getArguments) ⇒ <code>object</code> ℗
     * [~setOutput(output, vars, outraw)](#module_mds..setOutput) ℗
     * [~renderMD(id, md)](#module_mds..renderMD)
@@ -34,9 +34,9 @@
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | id | <code>string</code> | <code>&quot;script&quot;</code> | Id of the div to be modified. |
-| code | <code>string</code> |  | Script to be loaded |
+| code | <code>string</code> |  | Script to be loaded. |
 | bindings | <code>object</code> |  | Jailed bindings for the code. |
-| options | <code>object</code> |  | Option object |
+| options | <code>object</code> |  | Option object. |
 | options.outraw | <code>boolean</code> |  | Allow `outraw` (raw HTML) output. |
 
 <a name="module_mds..Script+render"></a>
@@ -79,11 +79,11 @@ In: ["name", "text"]Out: "<textarea id="scriptname"></textarea>"
 ```
 <a name="module_mds..getVariables"></a>
 
-### mds~getVariables(md) ⇒ <code>Object</code> ℗
+### mds~getVariables(md) ⇒ <code>object</code> ℗
 Extracts variables marked with "{{ type:name:data }}" notation.
 
 **Kind**: inner method of [<code>mds</code>](#module_mds)  
-**Returns**: <code>Object</code> - - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.  
+**Returns**: <code>object</code> - - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.  
 **Access**: private  
 
 | Param | Type | Description |
