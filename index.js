@@ -65,6 +65,12 @@ function getVariables(md) {
 	return output
 }
 
+/**
+ * Gets the value of the arguments for the function.
+ * 
+ * @param {object} vars - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
+ * @returns {object} - Arguments in {"name": value} notation.
+ */
 function getArguments(vars) {
 	var args = {}
 	for (let [name, [type, , , id]] of Object.entries(vars)) {
@@ -112,9 +118,30 @@ function setOutput(output, vars, outraw) {
 }
 
 /**
+ * Renders markdown-it in a div.
+ *
+ * @param {string} id - Id of div.
+ * @param {string} md - Markdown code.
+ */
+async function renderMD(id, md) {
+	let ready = ["interactive", "compete"].includes(document.readyState)
+	if (!ready)
+		await new Promise((resolve) => {
+			document.addEventListener("DOMContentLoaded", () => {
+				resolve()
+			})
+		})
+	let html = mdit.render(md)
+	document.getElementById(id).innerHTML = html
+}
+
+/**
  * @class - Represents a Script, contains the text, the jailed instance, the html elements, and logic.
  */
 class Script {
+	/**
+	 * Displays the script in the given id.
+	 */
 	async render() {
 		let ready = ["interactive", "compete"].includes(document.readyState)
 		if (!ready)
@@ -135,6 +162,7 @@ class Script {
 				})
 		}
 	}
+
 	/**
 	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded
@@ -162,6 +190,10 @@ class Script {
 		this.loading = true
 		this.render()
 	}
+
+	/**
+	 * Helper function which starts the jailed plugin as a Promise.
+	 */
 	start() {
 		return new Promise((resolve) => {
 			this.plugin.whenConnected(() => {
@@ -170,6 +202,10 @@ class Script {
 			})
 		})
 	}
+
+	/**
+	 * Executes the code in the jailed plugin and returns
+	 */
 	async run() {
 		if (this.loading) await this.start()
 		let args = getArguments(this.vars)
@@ -181,24 +217,6 @@ class Script {
 		})
 		setOutput(this.ret, this.vars, this.outraw)
 	}
-}
-
-/**
- * Renders markdown-it in a div.
- *
- * @param {string} id - Id of div.
- * @param {string} md - Markdown code.
- */
-async function renderMD(id, md) {
-	let ready = ["interactive", "compete"].includes(document.readyState)
-	if (!ready)
-		await new Promise((resolve) => {
-			document.addEventListener("DOMContentLoaded", () => {
-				resolve()
-			})
-		})
-	let html = mdit.render(md)
-	document.getElementById(id).innerHTML = html
 }
 
 window.mds = {Script: Script, renderMD: renderMD}
