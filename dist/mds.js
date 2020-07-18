@@ -1,9 +1,14 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+/**
+ * @module mds
+ */
+
 // NOTE: jailed was already imported
 const mdit = require("markdown-it")()
 
 /**
  * Gets HTML form of a variable.
+ * @private
  *
  * @param {string} name - Name of the variable.
  * @param {"run"|"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"} type - Type of the variable.
@@ -44,6 +49,7 @@ function var2html(name, type, data) {
 
 /**
  * Extracts variables marked with "{{ type:name:data }}" notation.
+ * @private
  *
  * @param {string} md - Markdown text.
  * @returns {Object} - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
@@ -66,6 +72,13 @@ function getVariables(md) {
 	return output
 }
 
+/**
+ * Gets the value of the arguments for the function.
+ * @private
+ *
+ * @param {object} vars - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
+ * @returns {object} - Arguments in {"name": value} notation.
+ */
 function getArguments(vars) {
 	var args = {}
 	for (let [name, [type, , , id]] of Object.entries(vars)) {
@@ -87,6 +100,7 @@ function getArguments(vars) {
 
 /**
  * Sets the output to the respective variables inside the document.
+ * @private
  *
  * @param {*} output - Values to be displayed. Non-arrays are turned to single item arrays.
  * @param {object} vars - Variables in {name:[type, data, html, id]} format.
@@ -113,9 +127,30 @@ function setOutput(output, vars, outraw) {
 }
 
 /**
+ * Renders markdown-it in a div.
+ *
+ * @param {string} id - Id of div.
+ * @param {string} md - Markdown code.
+ */
+async function renderMD(id, md) {
+	let ready = ["interactive", "compete"].includes(document.readyState)
+	if (!ready)
+		await new Promise((resolve) => {
+			document.addEventListener("DOMContentLoaded", () => {
+				resolve()
+			})
+		})
+	let html = mdit.render(md)
+	document.getElementById(id).innerHTML = html
+}
+
+/**
  * @class - Represents a Script, contains the text, the jailed instance, the html elements, and logic.
  */
 class Script {
+	/**
+	 * Displays the script in the given id.
+	 */
 	async render() {
 		let ready = ["interactive", "compete"].includes(document.readyState)
 		if (!ready)
@@ -136,6 +171,7 @@ class Script {
 				})
 		}
 	}
+
 	/**
 	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded
@@ -163,6 +199,11 @@ class Script {
 		this.loading = true
 		this.render()
 	}
+
+	/**
+	 * Helper function which starts the jailed plugin as a Promise.
+	 * @private
+	 */
 	start() {
 		return new Promise((resolve) => {
 			this.plugin.whenConnected(() => {
@@ -171,6 +212,10 @@ class Script {
 			})
 		})
 	}
+
+	/**
+	 * Executes the code in the jailed plugin and returns
+	 */
 	async run() {
 		if (this.loading) await this.start()
 		let args = getArguments(this.vars)
@@ -182,24 +227,6 @@ class Script {
 		})
 		setOutput(this.ret, this.vars, this.outraw)
 	}
-}
-
-/**
- * Renders markdown-it in a div.
- *
- * @param {string} id - Id of div.
- * @param {string} md - Markdown code.
- */
-async function renderMD(id, md) {
-	let ready = ["interactive", "compete"].includes(document.readyState)
-	if (!ready)
-		await new Promise((resolve) => {
-			document.addEventListener("DOMContentLoaded", () => {
-				resolve()
-			})
-		})
-	let html = mdit.render(md)
-	document.getElementById(id).innerHTML = html
 }
 
 window.mds = {Script: Script, renderMD: renderMD}

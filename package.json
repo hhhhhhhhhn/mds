@@ -6,7 +6,9 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "npx prettier --write **/*.{js,json,yml,md}",
-		"build": "npx browserify -e index.js -o dist/mds.js"
+		"build": "npx browserify -e index.js -o dist/mds.js",
+		"docs": "npx jsdoc-to-markdown -f index.js --private > api.md",
+		"all": "npm run format && npm run build && npm run docs"
 	},
 	"repository": {
 		"type": "git",
@@ -21,6 +23,7 @@
 	"homepage": "https://github.com/oekshido/qqq#readme",
 	"devDependencies": {
 		"browserify": "^16.5.1",
+		"jsdoc-to-markdown": "^6.0.1",
 		"prettier": "^2.0.5"
 	},
 	"dependencies": {
