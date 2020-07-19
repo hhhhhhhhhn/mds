@@ -7,12 +7,13 @@
         * [new Script(id, code, bindings, options)](#new_module_mds..Script_new)
         * [.render()](#module_mds..Script+render)
         * [.start()](#module_mds..Script+start) ℗
-        * [.run()](#module_mds..Script+run)
+        * [.run(fn)](#module_mds..Script+run)
     * [~var2html(name, type, data)](#module_mds..var2html) ⇒ <code>string</code> ℗
     * [~getVariables(md)](#module_mds..getVariables) ⇒ <code>object</code> ℗
     * [~getArguments(vars)](#module_mds..getArguments) ⇒ <code>object</code> ℗
     * [~setOutput(output, vars, outraw)](#module_mds..setOutput) ℗
     * [~renderMD(id, md)](#module_mds..renderMD)
+    * [~exposeFunctions(vars)](#module_mds..exposeFunctions) ⇒ <code>string</code> ℗
 
 <a name="module_mds..Script"></a>
 
@@ -25,7 +26,7 @@
     * [new Script(id, code, bindings, options)](#new_module_mds..Script_new)
     * [.render()](#module_mds..Script+render)
     * [.start()](#module_mds..Script+start) ℗
-    * [.run()](#module_mds..Script+run)
+    * [.run(fn)](#module_mds..Script+run)
 
 <a name="new_module_mds..Script_new"></a>
 
@@ -54,10 +55,15 @@ Helper function which starts the jailed plugin as a Promise.
 **Access**: private  
 <a name="module_mds..Script+run"></a>
 
-#### script.run()
+#### script.run(fn)
 Executes the code in the jailed plugin and returns
 
 **Kind**: instance method of [<code>Script</code>](#module_mds..Script)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fn | <code>string</code> | Function to run. |
+
 <a name="module_mds..var2html"></a>
 
 ### mds~var2html(name, type, data) ⇒ <code>string</code> ℗
@@ -80,7 +86,7 @@ In: ["name", "text"]Out: "<textarea id="scriptname"></textarea>"
 <a name="module_mds..getVariables"></a>
 
 ### mds~getVariables(md) ⇒ <code>object</code> ℗
-Extracts variables marked with "{{ type:name:data }}" notation.
+Extracts variables marked with "{{type:name:data}}" notation.
 
 **Kind**: inner method of [<code>mds</code>](#module_mds)  
 **Returns**: <code>object</code> - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.  
@@ -92,7 +98,7 @@ Extracts variables marked with "{{ type:name:data }}" notation.
 
 **Example**  
 ```js
-In: "Sample {{text:cool}} Text {{ input:val$ue }}"Out: {"cool":["text", "", "<textarea id="scriptcool"></textarea>", "scriptcool"], "val$ue":...}
+In: "Sample {{text:cool}} Text {{ input:val$ue }}"Out: {"cool":["text", "", "<textarea id="scriptcool"></textarea>", "scriptcool"], "val$ue ":...}
 ```
 <a name="module_mds..getArguments"></a>
 
@@ -132,4 +138,17 @@ Renders markdown-it in a div.
 | --- | --- | --- |
 | id | <code>string</code> | Id of div. |
 | md | <code>string</code> | Markdown code. |
+
+<a name="module_mds..exposeFunctions"></a>
+
+### mds~exposeFunctions(vars) ⇒ <code>string</code> ℗
+Injects javascript to expose the used functions outside the jailed plugin.
+
+**Kind**: inner method of [<code>mds</code>](#module_mds)  
+**Returns**: <code>string</code> - Code to be injected. Looks like ";application.setInterface({exec:exec})",if "exec" is the only `run` type variable.  
+**Access**: private  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| vars | <code>object</code> | Variables in {"name":["type", "data", "html", "id"]} format. |
 

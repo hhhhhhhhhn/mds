@@ -47,7 +47,7 @@ function var2html(name, type, data) {
 }
 
 /**
- * Extracts variables marked with "{{ type:name:data }}" notation.
+ * Extracts variables marked with "{{type:name:data}}" notation.
  * @private
  *
  * @param {string} md - Markdown text.
@@ -55,7 +55,7 @@ function var2html(name, type, data) {
  *
  * @example
  * In: "Sample {{text:cool}} Text {{ input:val$ue }}"
- * Out: {"cool":["text", "", "<textarea id="scriptcool"></textarea>", "scriptcool"], "val$ue":...}
+ * Out: {"cool":["text", "", "<textarea id="scriptcool"></textarea>", "scriptcool"], "val$ue ":...}
  */
 function getVariables(md) {
 	let output = {}
@@ -144,33 +144,25 @@ async function renderMD(id, md) {
 }
 
 /**
+ * Injects javascript to expose the used functions outside the jailed plugin.
+ * @private
+ *
+ * @param {object} vars - Variables in {"name":["type", "data", "html", "id"]} format.
+ *
+ * @returns {string} Code to be injected. Looks like ";application.setInterface({exec:exec})",
+ * if "exec" is the only `run` type variable.
+ */
+function exposeFunctions(vars) {
+	let code = ";application.setInterface({"
+	for (let [name, [type, , ,]] of Object.entries(vars))
+		if (type == "run") code += `${name}:${name},`
+	return code.slice(0, -1) + "})" // The last comma is eliminated with `slice`.
+}
+
+/**
  * @class - Represents a Script, contains the text, the jailed instance, the html elements, and logic.
  */
 class Script {
-	/**
-	 * Displays the script in the given id.
-	 */
-	async render() {
-		let ready = ["interactive", "compete"].includes(document.readyState)
-		if (!ready)
-			await new Promise((resolve) => {
-				document.addEventListener("DOMContentLoaded", () => {
-					resolve()
-				})
-			})
-		let html = mdit.render(this.md)
-		for (let [, , htm] of Object.values(this.vars)) {
-			html = html.replace(/\{\{.*?\}\}/, htm) // html is the render, htm is the variable's html.
-		}
-		document.getElementById(this.id).innerHTML = html
-		for (let [type, , , id] of Object.values(this.vars)) {
-			if (type == "run")
-				document.getElementById(id).addEventListener("click", () => {
-					this.run()
-				})
-		}
-	}
-
 	/**
 	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded.
@@ -192,11 +184,35 @@ class Script {
 		this.outraw = outraw
 		this.id = id
 		;[this.md, this.code] = code.split("{{{{")
-		this.code += ";application.setInterface({run:run})"
 		this.vars = getVariables(this.md) // Elements between brackets.
+		this.code += exposeFunctions(this.vars)
 		this.plugin = new jailed.DynamicPlugin(this.code, bindings)
 		this.loading = true
 		this.render()
+	}
+
+	/**
+	 * Displays the script in the given id.
+	 */
+	async render() {
+		let ready = ["interactive", "compete"].includes(document.readyState)
+		if (!ready)
+			await new Promise((resolve) => {
+				document.addEventListener("DOMContentLoaded", () => {
+					resolve()
+				})
+			})
+		let html = mdit.render(this.md)
+		for (let [, , htm] of Object.values(this.vars)) {
+			html = html.replace(/\{\{.*?\}\}/, htm) // html is the render, htm is the variable's html.
+		}
+		document.getElementById(this.id).innerHTML = html
+		for (let [name, [type, , , id]] of Object.entries(this.vars)) {
+			if (type == "run")
+				document.getElementById(id).addEventListener("click", () => {
+					this.run(name)
+				})
+		}
 	}
 
 	/**
@@ -214,12 +230,14 @@ class Script {
 
 	/**
 	 * Executes the code in the jailed plugin and returns
+	 *
+	 * @param {string} fn - Function to run.
 	 */
-	async run() {
+	async run(fn) {
 		if (this.loading) await this.start()
 		let args = getArguments(this.vars)
 		await new Promise((resolve) => {
-			this.plugin.remote.run(args, (val) => {
+			this.plugin.remote[fn](args, (val) => {
 				this.ret = val
 				resolve()
 			})

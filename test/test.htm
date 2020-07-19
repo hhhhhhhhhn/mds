@@ -5,10 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>MDS test</title>
 	<script src="../jailed/jailed.js"></script>
-	<script src="../dist/mds.min.js"></script>
+	<script src="../dist/mds.js"></script>
 	<script>
 // JS Start
 let code = `
+# Inputs
 - text: {{text:text:placeholder}}
 - shorttext: {{shorttext:shorttext:placeholder}}
 - options: {{options:options:Option 1, Option 2}}
@@ -20,9 +21,20 @@ let code = `
 
 {{outmd:out}}
 
+# Eval
+Enter values to be evaluated: {{shorttext:evalstring:1 + 1}}
+
+{{run:evaluate:Evaluate!}}
+
+{{outmd:evalout}}
+
 {{{{
 function run(inputs, ret){
-	ret({out:Object.values(inputs).map(e => String(e)).join(", ")})
+	ret({out:Object.values(inputs).slice(0, 6).map(e => String(e)).join(", ")})
+}
+
+function evaluate({evalstring = ""}, ret){
+	ret({evalout:eval(evalstring)})
 }
 `
 let script = new mds.Script("script", code)
