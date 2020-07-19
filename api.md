@@ -64,7 +64,7 @@ Executes the code in the jailed plugin and returns
 Gets HTML form of a variable.
 
 **Kind**: inner method of [<code>mds</code>](#module_mds)  
-**Returns**: <code>string</code> - - HTML form of the variable.  
+**Returns**: <code>string</code> - HTML form of the variable.  
 **Access**: private  
 
 | Param | Type | Description |
@@ -83,7 +83,7 @@ In: ["name", "text"]Out: "<textarea id="scriptname"></textarea>"
 Extracts variables marked with "{{ type:name:data }}" notation.
 
 **Kind**: inner method of [<code>mds</code>](#module_mds)  
-**Returns**: <code>object</code> - - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.  
+**Returns**: <code>object</code> - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.  
 **Access**: private  
 
 | Param | Type | Description |
@@ -100,7 +100,7 @@ In: "Sample {{text:cool}} Text {{ input:val$ue }}"Out: {"cool":["text", "", "<t
 Gets the value of the arguments for the function.
 
 **Kind**: inner method of [<code>mds</code>](#module_mds)  
-**Returns**: <code>object</code> - - Arguments in {"name": value} notation.  
+**Returns**: <code>object</code> - Arguments in {"name": value} notation.  
 **Access**: private  
 
 | Param | Type | Description |
@@ -117,8 +117,8 @@ Sets the output to the respective variables inside the document.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| output | <code>\*</code> | Values to be displayed. Non-arrays are turned to single item arrays. |
-| vars | <code>object</code> | Variables in {name:[type, data, html, id]} format. |
+| output | <code>object</code> \| <code>\*</code> | Values displayed in {"name":value} format. If not an object, {"output":output} is used. |
+| vars | <code>object</code> | Variables in {"name":["type", "data", "html", "id"]} format. |
 | outraw | <code>boolean</code> | Allow `outraw` (plain HTML) output. |
 
 <a name="module_mds..renderMD"></a>

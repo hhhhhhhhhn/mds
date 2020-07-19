@@ -13,7 +13,7 @@ const mdit = require("markdown-it")()
  * @param {string} name - Name of the variable.
  * @param {"run"|"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"} type - Type of the variable.
  * @param {string} data - Data associated with the variable.
- * @returns {string} - HTML form of the variable.
+ * @returns {string} HTML form of the variable.
  *
  * @example
  * In: ["name", "text"]
@@ -52,7 +52,7 @@ function var2html(name, type, data) {
  * @private
  *
  * @param {string} md - Markdown text.
- * @returns {object} - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
+ * @returns {object} Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
  *
  * @example
  * In: "Sample {{text:cool}} Text {{ input:val$ue }}"
@@ -77,7 +77,7 @@ function getVariables(md) {
  * @private
  *
  * @param {object} vars - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
- * @returns {object} - Arguments in {"name": value} notation.
+ * @returns {object} Arguments in {"name": value} notation.
  */
 function getArguments(vars) {
 	var args = {}
@@ -102,8 +102,8 @@ function getArguments(vars) {
  * Sets the output to the respective variables inside the document.
  * @private
  *
- * @param {*} output - Values to be displayed. Non-arrays are turned to single item arrays.
- * @param {object} vars - Variables in {name:[type, data, html, id]} format.
+ * @param {object|*} output - Values displayed in {"name":value} format. If not an object, {"output":output} is used.
+ * @param {object} vars - Variables in {"name":["type", "data", "html", "id"]} format.
  * @param {boolean} outraw - Allow `outraw` (plain HTML) output.
  */
 function setOutput(output, vars, outraw) {
