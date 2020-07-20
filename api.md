@@ -4,7 +4,7 @@
 
 * [mds](#module_mds)
     * [~Script](#module_mds..Script)
-        * [new Script(id, code, bindings, options)](#new_module_mds..Script_new)
+        * [new Script(id, code, [options])](#new_module_mds..Script_new)
         * [.render()](#module_mds..Script+render)
         * [.run(fn)](#module_mds..Script+run)
 
@@ -16,21 +16,21 @@
 **Kind**: inner class of [<code>mds</code>](#module_mds)  
 
 * [~Script](#module_mds..Script)
-    * [new Script(id, code, bindings, options)](#new_module_mds..Script_new)
+    * [new Script(id, code, [options])](#new_module_mds..Script_new)
     * [.render()](#module_mds..Script+render)
     * [.run(fn)](#module_mds..Script+run)
 
 <a name="new_module_mds..Script_new"></a>
 
-#### new Script(id, code, bindings, options)
+#### new Script(id, code, [options])
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| id | <code>string</code> | <code>&quot;script&quot;</code> | Id of the div to be modified. |
+| id | <code>string</code> |  | Id of the div to be modified. |
 | code | <code>string</code> |  | Script to be loaded. |
-| bindings | <code>object</code> |  | Jailed bindings for the code. |
-| options | <code>object</code> |  | Option object. |
-| options.outraw | <code>boolean</code> |  | Allow `outraw` (raw HTML) output. |
+| [options] | <code>object</code> |  | Option object. |
+| [options.bindings] | <code>object</code> | <code>{}</code> | Jailed bindings for the code. |
+| [options.outraw] | <code>boolean</code> | <code>false</code> | Allow `outraw` (raw HTML) output. |
 
 <a name="module_mds..Script+render"></a>
 

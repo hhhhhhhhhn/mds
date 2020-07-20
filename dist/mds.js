@@ -128,6 +128,7 @@ function setOutput(output, vars, outraw) {
 
 /**
  * Renders markdown-it in a div.
+ * @private
  *
  * @param {string} id - Id of div.
  * @param {string} md - Markdown code.
@@ -167,16 +168,11 @@ class Script {
 	/**
 	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded.
-	 * @param {object} bindings - Jailed bindings for the code.
-	 * @param {object} options - Option object.
-	 * @param {boolean} options.outraw - Allow `outraw` (raw HTML) output.
+	 * @param {object} [options] - Option object.
+	 * @param {object} [options.bindings={}] - Jailed bindings for the code.
+	 * @param {boolean} [options.outraw=false] - Allow `outraw` (raw HTML) output.
 	 */
-	constructor(
-		id = "script",
-		code = "",
-		bindings = {},
-		{outraw = false} = {}
-	) {
+	constructor(id = "", code = "", {outraw = false, bindings = {}} = {}) {
 		if (!code.includes("{{{{")) {
 			// If there is no script, just javascript.
 			renderMD(id, code)
