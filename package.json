@@ -8,7 +8,7 @@
 		"format": "npx prettier --write **/*.{js,json,yml,md}",
 		"build": "npx browserify -e index.js -o dist/mds.js",
 		"buildmin": "npx browserify -p tinyify -e index.js -o dist/mds.min.js",
-		"docs": "npx jsdoc-to-markdown -f index.js --private > api.md",
+		"docs": "npx jsdoc-to-markdown -f index.js > api.md",
 		"all": "npm run format && npm run build && npm run buildmin && npm run docs"
 	},
 	"repository": {

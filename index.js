@@ -216,25 +216,20 @@ class Script {
 	}
 
 	/**
-	 * Helper function which starts the jailed plugin as a Promise.
-	 * @private
-	 */
-	start() {
-		return new Promise((resolve) => {
-			this.plugin.whenConnected(() => {
-				this.loading = false
-				resolve()
-			})
-		})
-	}
-
-	/**
 	 * Executes the code in the jailed plugin and returns
 	 *
 	 * @param {string} fn - Function to run.
 	 */
 	async run(fn) {
-		if (this.loading) await this.start()
+		if (this.loading)
+			// Waits for Jailed plugin to load.
+			await new Promise((resolve) => {
+				this.plugin.whenConnected(() => {
+					this.loading = false
+					resolve()
+				})
+			})
+
 		let args = getArguments(this.vars)
 		await new Promise((resolve) => {
 			this.plugin.remote[fn](args, (val) => {
@@ -246,4 +241,4 @@ class Script {
 	}
 }
 
-window.mds = {Script: Script, renderMD: renderMD}
+window.mds = {Script: Script}
