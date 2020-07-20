@@ -127,6 +127,7 @@ function setOutput(output, vars, outraw) {
 
 /**
  * Renders markdown-it in a div.
+ * @private
  *
  * @param {string} id - Id of div.
  * @param {string} md - Markdown code.

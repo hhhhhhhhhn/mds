@@ -7,7 +7,6 @@
         * [new Script(id, code, bindings, options)](#new_module_mds..Script_new)
         * [.render()](#module_mds..Script+render)
         * [.run(fn)](#module_mds..Script+run)
-    * [~renderMD(id, md)](#module_mds..renderMD)
 
 <a name="module_mds..Script"></a>
 
@@ -49,16 +48,4 @@ Executes the code in the jailed plugin and returns
 | Param | Type | Description |
 | --- | --- | --- |
 | fn | <code>string</code> | Function to run. |
-
-<a name="module_mds..renderMD"></a>
-
-### mds~renderMD(id, md)
-Renders markdown-it in a div.
-
-**Kind**: inner method of [<code>mds</code>](#module_mds)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | Id of div. |
-| md | <code>string</code> | Markdown code. |
 
