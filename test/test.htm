@@ -28,6 +28,18 @@ Enter values to be evaluated: {{shorttext:evalstring:1 + 1}}
 
 {{outmd:evalout}}
 
+# Outputs
+
+{{run:setouts:Test Outputs!}}
+
+{{text:a}}
+
+{{shorttext:b}}
+
+Out 3: {{checkbox:c}}
+
+{{outmd:d}}
+
 {{{{
 function run(inputs, ret){
 	ret({out:Object.values(inputs).slice(0, 6).map(e => String(e)).join(", ")})
@@ -35,6 +47,10 @@ function run(inputs, ret){
 
 function evaluate({evalstring = ""}, ret){
 	ret({evalout:eval(evalstring)})
+}
+
+function setouts({}, ret){
+	ret({a:"Out 1", b:"Out 2", c:true, d:"### Out 5"})
 }
 `
 let script = new mds.Script("script", code)

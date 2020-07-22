@@ -18,7 +18,7 @@ In HTML:
 In JS:
 
 ```javascript
-let script = new mds.Script("scriptid", code, bindings, options)
+let script = new mds.Script("scriptid", code, options)
 ```
 
 ## MDS format
@@ -43,9 +43,9 @@ one script can have multiple functions.
 
 | Type      | Description           | Function | Data                    |
 | --------- | --------------------- | -------- | ----------------------- |
-| shorttext | Short text input.     | Input    | Text placeholder.       |
-| text      | Textarea.             | Input    | Text placeholder.       |
-| checkbox  | Returns boolean.      | Input    | Default value (1 or 0). |
+| shorttext | Short text input.     | I/O      | Text placeholder.       |
+| text      | Textarea.             | I/O      | Text placeholder.       |
+| checkbox  | Returns boolean.      | I/O      | Default value (1 or 0). |
 | options   | Selection of strings. | Input    | Comma separated values. |
 | outmd     | Displays markdown.    | Output   | No Use.                 |
 | outraw\*  | Displays html.        | Output   | No Use.                 |

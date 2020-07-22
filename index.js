@@ -119,6 +119,15 @@ function setOutput(output, vars, outraw) {
 				document.getElementById(id).innerHTML = mdit.render(
 					String(value)
 				)
+				break
+			case "text":
+			case "shorttext":
+			case "options":
+				document.getElementById(id).value = String(value)
+				break
+			case "checkbox":
+				document.getElementById(id).checked = value
+				break
 			default:
 				break
 		}
@@ -165,6 +174,8 @@ function exposeFunctions(vars) {
  */
 class Script {
 	/**
+	 * Creates the script, and runs the initial render.
+	 *
 	 * @param {string} id - Id of the div to be modified.
 	 * @param {string} code - Script to be loaded.
 	 * @param {object} [options] - Option object.
@@ -212,7 +223,7 @@ class Script {
 	}
 
 	/**
-	 * Executes the code in the jailed plugin and returns
+	 * Executes the code in the jailed plugin and displays the result.
 	 *
 	 * @param {string} fn - Function to run.
 	 */

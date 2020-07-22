@@ -23,6 +23,8 @@
 <a name="new_module_mds..Script_new"></a>
 
 #### new Script(id, code, [options])
+Creates the script, and runs the initial render.
+
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -41,7 +43,7 @@ Displays the script in the given id.
 <a name="module_mds..Script+run"></a>
 
 #### script.run(fn)
-Executes the code in the jailed plugin and returns
+Executes the code in the jailed plugin and displays the result.
 
 **Kind**: instance method of [<code>Script</code>](#module_mds..Script)  
 
