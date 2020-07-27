@@ -170,82 +170,65 @@ function exposeFunctions(vars) {
 }
 
 /**
- * @class - Represents a Script, contains the text, the jailed instance, the html elements, and logic.
+ * Executes the code in the jailed plugin and displays the result.
+ * @private
+ *
+ * @param {string} fn - Function to run.
+ * @param {object} vars - Variables in {"name":["type", "data", "html", "id"]} format.
+ * @param {jailed.DynamicPlugin} plugin - jailed plugin.
  */
-class Script {
-	/**
-	 * Creates the script, and runs the initial render.
-	 *
-	 * @param {string} id - Id of the div to be modified.
-	 * @param {string} code - Script to be loaded.
-	 * @param {object} [options] - Option object.
-	 * @param {object} [options.bindings={}] - Jailed bindings for the code.
-	 * @param {boolean} [options.outraw=false] - Allow `outraw` (raw HTML) output.
-	 */
-	constructor(id = "", code = "", {outraw = false, bindings = {}} = {}) {
-		if (!code.includes("{{{{")) {
-			// If there is no script, just javascript.
-			renderMD(id, code)
-			return
-		}
-		this.outraw = outraw
-		this.id = id
-		;[this.md, this.code] = code.split("{{{{")
-		this.vars = getVariables(this.md) // Elements between brackets.
-		this.code += exposeFunctions(this.vars)
-		this.plugin = new jailed.DynamicPlugin(this.code, bindings)
-		this.loading = true
-		this.render()
-	}
-
-	/**
-	 * Displays the script in the given id.
-	 */
-	async render() {
-		let ready = ["interactive", "compete"].includes(document.readyState)
-		if (!ready)
-			await new Promise((resolve) => {
-				document.addEventListener("DOMContentLoaded", () => {
-					resolve()
-				})
-			})
-		let html = mdit.render(this.md)
-		for (let [, , htm] of Object.values(this.vars)) {
-			html = html.replace(/\{\{.*?\}\}/, htm) // html is the render, htm is the variable's html.
-		}
-		document.getElementById(this.id).innerHTML = html
-		for (let [name, [type, , , id]] of Object.entries(this.vars)) {
-			if (type == "run")
-				document.getElementById(id).addEventListener("click", () => {
-					this.run(name)
-				})
-		}
-	}
-
-	/**
-	 * Executes the code in the jailed plugin and displays the result.
-	 *
-	 * @param {string} fn - Function to run.
-	 */
-	async run(fn) {
-		if (this.loading)
-			// Waits for Jailed plugin to load.
-			await new Promise((resolve) => {
-				this.plugin.whenConnected(() => {
-					this.loading = false
-					resolve()
-				})
-			})
-
-		let args = getArguments(this.vars)
-		await new Promise((resolve) => {
-			this.plugin.remote[fn](args, (val) => {
-				this.ret = val
-				resolve()
-			})
+async function run(fn, vars, plugin, outraw) {
+	const args = getArguments(vars)
+	let ret
+	await new Promise((resolve) => {
+		plugin.remote[fn](args, (val) => {
+			ret = val
+			resolve()
 		})
-		setOutput(this.ret, this.vars, this.outraw)
+	})
+	setOutput(ret, vars, outraw)
+}
+
+/**
+ * Creates and renders the script.
+ *
+ * @param {string} id - Id of the div to be modified.
+ * @param {string} code - Script to be loaded.
+ * @param {object} [options] - Option object.
+ * @param {object} [options.bindings={}] - Jailed bindings for the code.
+ * @param {boolean} [options.outraw=false] - Allow `outraw` (raw HTML) output.
+ */
+async function create(
+	id = "",
+	code = "",
+	{outraw = false, bindings = {}} = {}
+) {
+	if (!code.includes("{{{{")) return renderMD(id, code) // If plain markdown is given, just renders it.
+
+	let [md, js] = code.split("{{{{")
+	let vars = getVariables(md) // Elements between brackets.
+	js += exposeFunctions(vars) // Injects code that exposes variables.
+
+	let plugin = new jailed.DynamicPlugin(js, bindings)
+	await new Promise((resolve) => {
+		// Waits for jailed plugin initialization.
+		plugin.whenConnected(() => {
+			resolve()
+		})
+	})
+
+	let htmlOutput = mdit.render(md)
+	for (let [, , html] of Object.values(vars)) {
+		htmlOutput = htmlOutput.replace(/\{\{.*?\}\}/, html)
+	}
+	document.getElementById(id).innerHTML = htmlOutput
+
+	for (let [name, [type, , , id]] of Object.entries(vars)) {
+		if (type == "run")
+			document.getElementById(id).addEventListener("click", () => {
+				run(name, vars, plugin, outraw)
+			})
 	}
 }
 
-window.mds = {Script: Script}
+window.mds = {create: create}

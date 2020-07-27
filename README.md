@@ -18,7 +18,7 @@ In HTML:
 In JS:
 
 ```javascript
-let script = new mds.Script("scriptid", code, options)
+mds.create("scriptid", code, options)
 ```
 
 ## MDS format

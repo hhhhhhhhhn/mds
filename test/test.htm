@@ -50,10 +50,10 @@ function evaluate({evalstring = ""}, ret){
 }
 
 function setouts({}, ret){
-	ret({a:"Out 1", b:"Out 2", c:true, d:"### Out 5"})
+	ret({a:"Out 1", b:"Out 2", c:true, d:"### Out 4"})
 }
 `
-let script = new mds.Script("script", code)
+let script = mds.create("script", code)
 // JS End
 	</script>
 </head>
