@@ -136,25 +136,6 @@ function setOutput(output, vars, outraw) {
 }
 
 /**
- * Renders markdown-it in a div.
- * @private
- *
- * @param {string} id - Id of div.
- * @param {string} md - Markdown code.
- */
-async function renderMD(id, md) {
-	let ready = ["interactive", "compete"].includes(document.readyState)
-	if (!ready)
-		await new Promise((resolve) => {
-			document.addEventListener("DOMContentLoaded", () => {
-				resolve()
-			})
-		})
-	let html = mdit.render(md)
-	document.getElementById(id).innerHTML = html
-}
-
-/**
  * Injects javascript to expose the used functions outside the jailed plugin.
  * @private
  *
@@ -204,7 +185,11 @@ async function create(
 	code = "",
 	{outraw = false, bindings = {}} = {}
 ) {
-	if (!code.includes("{{{{")) return renderMD(id, code) // If plain markdown is given, just renders it.
+	if (!code.includes("{{{{")) {
+		// If plain markdown is given, just renders it.
+		document.getElementById(id).innerHTML = mdit.render(md)
+		return
+	}
 
 	let [md, js] = code.split("{{{{")
 	let vars = getVariables(md) // Elements between brackets.
