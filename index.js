@@ -186,7 +186,7 @@ async function create(
 ) {
 	if (!code.includes("{{{{")) {
 		// If plain markdown is given, just renders it.
-		document.getElementById(id).innerHTML = mdit.render(md)
+		document.getElementById(id).innerHTML = mdit.render(code)
 		return
 	}
 
