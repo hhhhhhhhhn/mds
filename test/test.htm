@@ -16,6 +16,7 @@ let code = `
 - checkbox: {{checkbox:checkbox}}
   - checkbox (1): {{checkbox:checkbox1:1}}
   - checkbox (0): {{checkbox:checkbox0:0}}
+- infile: {{infile:infile}}
 
 {{run:run:Check Values!}}
 
@@ -42,7 +43,7 @@ Out 3: {{checkbox:c}}
 
 {{{{
 function run(inputs, ret){
-	ret({out:Object.values(inputs).slice(0, 6).map(e => String(e)).join(", ")})
+	ret({out:Object.values(inputs).slice(0, 7).map(e => String(e)).join(", ")})
 }
 
 function evaluate({evalstring = ""}, ret){

@@ -10,7 +10,7 @@ const mdit = require("markdown-it")()
  * @private
  *
  * @param {string} name - Name of the variable.
- * @param {"run"|"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"} type - Type of the variable.
+ * @param {"run"|"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"|"infile"} type - Type of the variable.
  * @param {string} data - Data associated with the variable.
  * @returns {string} HTML form of the variable.
  *
@@ -24,7 +24,7 @@ function var2html(name, type, data) {
 		case "run":
 			return `<button id="script${name}">${data}</button>`
 		case "shorttext":
-			return `<input type="text" id="script${name}", value="${data}">`
+			return `<input type="text" id="script${name}" value="${data}">`
 		case "text":
 			return `<textarea id="script${name}">${data}</textarea>`
 		case "outraw":
@@ -41,6 +41,8 @@ function var2html(name, type, data) {
 				for (let option of data.split(","))
 					html += `<option value="${option}">${option}</option>`
 			return html + "</select>"
+		case "infile":
+			return `<input type="file" id="script${name}">`
 		default:
 			return ""
 	}
@@ -72,13 +74,35 @@ function getVariables(md) {
 }
 
 /**
+ * Gets the content from file input, or returns empty string.
+ *
+ * @param {string} id - Id of the input element.
+ * @returns {string} - File contents or empty string.
+ */
+function readFile(id) {
+	return new Promise((resolve) => {
+		let reader = new FileReader()
+		reader.onload = () => {
+			resolve(reader.result)
+		}
+		reader.onerror = () => {
+			resolve("")
+		}
+
+		let files = document.getElementById(id).files
+		if (files[0]) reader.readAsText(files[0])
+		else resolve("")
+	})
+}
+
+/**
  * Gets the value of the arguments for the function.
  * @private
  *
  * @param {object} vars - Variables in {"name":["type", "data", "HTML", "id"], ...} notation.
  * @returns {object} Arguments in {"name": value} notation.
  */
-function getArguments(vars) {
+async function getArguments(vars) {
 	var args = {}
 	for (let [name, [type, , , id]] of Object.entries(vars)) {
 		switch (type) {
@@ -89,6 +113,9 @@ function getArguments(vars) {
 				break
 			case "checkbox":
 				args[name] = document.getElementById(id).checked
+				break
+			case "infile":
+				args[name] = await readFile(id)
 				break
 			default:
 				break
@@ -159,7 +186,7 @@ function exposeFunctions(vars) {
  * @param {jailed.DynamicPlugin} plugin - jailed plugin.
  */
 async function run(fn, vars, plugin, outraw) {
-	const args = getArguments(vars)
+	const args = await getArguments(vars)
 	let ret
 	await new Promise((resolve) => {
 		plugin.remote[fn](args, (val) => {

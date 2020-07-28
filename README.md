@@ -47,6 +47,7 @@ one script can have multiple functions.
 | text      | Textarea.             | I/O      | Text placeholder.       |
 | checkbox  | Returns boolean.      | I/O      | Default value (1 or 0). |
 | options   | Selection of strings. | Input    | Comma separated values. |
+| infile    | File input          . | Input    | No Use.                 |
 | outmd     | Displays markdown.    | Output   | No Use.                 |
 | outraw\*  | Displays html.        | Output   | No Use.                 |
 | run       | Button to run script. | Run      | Button Text.            |
