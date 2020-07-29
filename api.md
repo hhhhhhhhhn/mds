@@ -1,23 +1,6 @@
 <a name="module_mds"></a>
 
 ## mds
-
-* [mds](#module_mds)
-    * [~readFile(id)](#module_mds..readFile) ⇒ <code>string</code>
-    * [~create(id, code, [options])](#module_mds..create)
-
-<a name="module_mds..readFile"></a>
-
-### mds~readFile(id) ⇒ <code>string</code>
-Gets the content from file input, or returns empty string.
-
-**Kind**: inner method of [<code>mds</code>](#module_mds)  
-**Returns**: <code>string</code> - - File contents or empty string.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| id | <code>string</code> | Id of the input element. |
-
 <a name="module_mds..create"></a>
 
 ### mds~create(id, code, [options])

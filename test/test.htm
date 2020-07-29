@@ -41,6 +41,8 @@ Out 3: {{checkbox:c}}
 
 {{outmd:d}}
 
+{{outfile:e:out.md,Out 5}}
+
 {{{{
 function run(inputs, ret){
 	ret({out:Object.values(inputs).slice(0, 7).map(e => String(e)).join(", ")})
@@ -51,7 +53,7 @@ function evaluate({evalstring = ""}, ret){
 }
 
 function setouts({}, ret){
-	ret({a:"Out 1", b:"Out 2", c:true, d:"### Out 4"})
+	ret({a:"Out 1", b:"Out 2", c:true, d:"### Out 4", e:"Out 5 value"})
 }
 `
 let script = mds.create("script", code)

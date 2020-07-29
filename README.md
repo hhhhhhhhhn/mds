@@ -41,16 +41,17 @@ one script can have multiple functions.
 
 ## Types
 
-| Type      | Description           | Function | Data                    |
-| --------- | --------------------- | -------- | ----------------------- |
-| shorttext | Short text input.     | I/O      | Text placeholder.       |
-| text      | Textarea.             | I/O      | Text placeholder.       |
-| checkbox  | Returns boolean.      | I/O      | Default value (1 or 0). |
-| options   | Selection of strings. | Input    | Comma separated values. |
-| infile    | File input          . | Input    | No Use.                 |
-| outmd     | Displays markdown.    | Output   | No Use.                 |
-| outraw\*  | Displays html.        | Output   | No Use.                 |
-| run       | Button to run script. | Run      | Button Text.            |
+| Type      | Description           | Function | Data                          |
+| --------- | --------------------- | -------- | ----------------------------- |
+| shorttext | Short text input.     | I/O      | Text placeholder.             |
+| text      | Textarea.             | I/O      | Text placeholder.             |
+| checkbox  | Returns boolean.      | I/O      | Default value (1 or 0).       |
+| options   | Selection of strings. | Input    | Comma separated values.       |
+| infile    | File input.           | Input    | No Use.                       |
+| outmd     | Displays markdown.    | Output   | No Use.                       |
+| outraw\*  | Displays html.        | Output   | No Use.                       |
+| outfile   | Exports file.         | Output   | _filename_, _anchor tag text_ |
+| run       | Button to run script. | Run      | Button Text.                  |
 
 Note: `outraw` is disabled by default, and can only be activated by setting the
 `outraw` option to `true`.
@@ -98,3 +99,5 @@ function runname({n = "10"}, ret){
 	ret(fib) // This will be considered as {output:fib}
 }
 ```
+
+For another example, check the `test/test.html` file.

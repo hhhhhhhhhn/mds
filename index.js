@@ -10,7 +10,7 @@ const mdit = require("markdown-it")()
  * @private
  *
  * @param {string} name - Name of the variable.
- * @param {"run"|"shorttext"|"text"|"outraw"|"outraw"|"checkbox"|"options"|"infile"} type - Type of the variable.
+ * @param {string} type - Type of the variable. Check README for table.
  * @param {string} data - Data associated with the variable.
  * @returns {string} HTML form of the variable.
  *
@@ -43,6 +43,9 @@ function var2html(name, type, data) {
 			return html + "</select>"
 		case "infile":
 			return `<input type="file" id="script${name}">`
+		case "outfile":
+			let [filename, text] = data.split(",")
+			return `<a download="${filename}" id="script${name}">${text}</a>`
 		default:
 			return ""
 	}
@@ -75,9 +78,10 @@ function getVariables(md) {
 
 /**
  * Gets the content from file input, or returns empty string.
+ * @private
  *
  * @param {string} id - Id of the input element.
- * @returns {string} - File contents or empty string.
+ * @returns {string} File contents or empty string.
  */
 function readFile(id) {
 	return new Promise((resolve) => {
@@ -155,6 +159,14 @@ function setOutput(output, vars, outraw) {
 			case "checkbox":
 				document.getElementById(id).checked = value
 				break
+			case "outfile":
+				document
+					.getElementById(id)
+					.setAttribute(
+						"href",
+						"data:text/plain;charset=utf-8," +
+							encodeURIComponent(String(value))
+					)
 			default:
 				break
 		}
