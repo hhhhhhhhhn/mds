@@ -50,7 +50,7 @@ one script can have multiple functions.
 | infile    | File input.           | Input    | No Use.                       |
 | outmd     | Displays markdown.    | Output   | No Use.                       |
 | outraw\*  | Displays html.        | Output   | No Use.                       |
-| outfile   | Exports file.         | Output   | _filename_, _anchor tag text_ |
+| outfile   | Exports file.         | Output   | _filename_,_anchor tag text_ |
 | run       | Button to run script. | Run      | Button Text.                  |
 
 Note: `outraw` is disabled by default, and can only be activated by setting the
