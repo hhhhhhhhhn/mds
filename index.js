@@ -210,6 +210,20 @@ async function run(fn, vars, plugin, outraw) {
 }
 
 /**
+ * Document load Promise.
+ * @private
+ *
+ * @returns {Promise} - Resolves when document loads
+ */
+function documentLoad() {
+	return new Promise((resolve) => {
+		if (document.readyState == "loading")
+			document.addEventListener("DOMContentLoaded", resolve)
+		else resolve()
+	})
+}
+
+/**
  * Creates and renders the script.
  *
  * @param {string} id - Id of the div to be modified.
@@ -233,6 +247,13 @@ async function create(
 	let vars = getVariables(md) // Elements between brackets.
 	js += exposeFunctions(vars) // Injects code that exposes variables.
 
+	await documentLoad()
+	let htmlOutput = mdit.render(md)
+	for (let [, , html] of Object.values(vars)) {
+		htmlOutput = htmlOutput.replace(/\{\{.*?\}\}/, html)
+	}
+	document.getElementById(id).innerHTML = htmlOutput
+
 	let plugin = new jailed.DynamicPlugin(js, bindings)
 	await new Promise((resolve) => {
 		// Waits for jailed plugin initialization.
@@ -240,12 +261,6 @@ async function create(
 			resolve()
 		})
 	})
-
-	let htmlOutput = mdit.render(md)
-	for (let [, , html] of Object.values(vars)) {
-		htmlOutput = htmlOutput.replace(/\{\{.*?\}\}/, html)
-	}
-	document.getElementById(id).innerHTML = htmlOutput
 
 	for (let [name, [type, , , id]] of Object.entries(vars)) {
 		if (type == "run")
